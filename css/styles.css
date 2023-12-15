@@ -15,17 +15,15 @@ body {
 
 .head {
     font-size: 5vmin;
-    margin-top: 5vmin;
+    margin-top: 3vmin;
     padding: 2vmin;
     font-family: 'press Start 2P';
     color: red;
-    margin: 5vmin, 0, 2vmin, 0;
 }
 
 .caught {
-    border: 0;
     font-size: 2vmin;
-    margin-top: 5px;
+    margin-top: 2vmin;
     padding: 2vmin;
     font-family: 'press Start 2P';
     color: red;
@@ -35,9 +33,10 @@ body {
 .board {
     height: 100vh;
     display: flex;
+    border: 0;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 2vmin;
 }
 
 .grid {
@@ -50,12 +49,12 @@ body {
     height: 600px;
     width: 600px;
     border-color: transparent;
-    margin: 0;
+    margin-top: 1vmin;
    
 } 
 
 .grid div {
-    border: 1px solid lightgrey;
+    border: 1px solid transparent;
     flex-grow: 1;
     height: 10%;
     width: 10%;
@@ -102,21 +101,10 @@ body {
     color: gray;
     cursor: pointer;
     font-size: 2vmin;
-    margin-top: 4vmin;
+    margin-top: 2vmin;
     padding: 2vmin;
     transition: all 0.3s ease-in;
     font-family: 'press Start 2P';
+    
 }
 
-.scoreboard {
-    display: none;
-    font-size: 2vmin;
-    margin-top: 2vmin;
-    padding: 2vmin;
-    font-family: 'press Start 2P';
-    background-color: #fff;
-    border: 0.1vmin solid gray;
-    border-radius: 4vmin;
-    color: gray;
-    text-align: center;
-}

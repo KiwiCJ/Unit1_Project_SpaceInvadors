@@ -1,11 +1,10 @@
-let gameLost = false
 
 function init() {
 
 //!ELEMENTS
 const grid = document.querySelector('.board .grid')
-const startButton = document.querySelector('.startButton')
-const scoreboard = document.querySelector('.scoreboard .final-score')
+// const startButton = document.querySelector('.startButton')
+
 
 //! VARIABLES 
 
@@ -46,13 +45,19 @@ function createGrid() {
         handleEnemyMovement()
 }
 
+
+
+
 function addPlayer(position) {
     cells[position].classList.add('player')
 }
 
+
 function removePlayer() {
     cells[currentPosition].classList.remove('player')
 }
+
+
 
 function addEnemies() {
     for (let row = 0; row < totalRows; row++) {
@@ -65,9 +70,13 @@ function addEnemies() {
 }
 
 
+
 function addEnemy(position) {
     cells[position].classList.add('enemy')
 }
+
+
+
 
 function handlePlayerMovement(event) {
     const key = event.keyCode
@@ -91,11 +100,15 @@ function handlePlayerMovement(event) {
     addPlayer(currentPosition)
 }
 
+
+
 function handleShoot() { 
     const bulletPosition = currentPosition 
     const bulletIndex2 = bulletPosition % width
     addBullet(bulletPosition, bulletIndex2)
 }
+
+
 
 function addBullet(position, index) {
     const playerBullet = document.createElement('div')
@@ -103,45 +116,48 @@ function addBullet(position, index) {
     cells[position].appendChild(playerBullet)
 
     const bulletInterval = setInterval(() => {
-        // console.log('Bullet position:', position);
-        // console.log('Enemy positions:', enemyPositions);
-
+        // check if bullet still on grid
         if (position >= width) {
             cells[position].removeChild(playerBullet)
             position -= width
             cells[position].appendChild(playerBullet)
 
-            const enemiesInColumn = enemyPositions.filter(enemyPos => enemyPos % width === index) // check collision
-            // console.log('Enemies in column:', enemiesInColumn);
-            // console.log(position);
-
+            //check collision with enemy
+            const enemiesInColumn = enemyPositions.filter(enemyPos => enemyPos % width === index)
             if (enemiesInColumn.length > 0 && enemiesInColumn.includes(position)  ) {
                 const targetEnemyPosition = enemiesInColumn[enemiesInColumn.length -1]
                 const targetEnemyIndex = enemyPositions.indexOf(targetEnemyPosition)
-                //console.log('Target enemy position:', targetEnemyPosition);
-
+              
+                //remove enemy if hit
                 cells[targetEnemyPosition].classList.remove('enemy')
                 enemyPositions.splice(targetEnemyIndex, 1)
                 clearInterval(bulletInterval)
                 cells[position].removeChild(playerBullet)
 
                 score += 10
-                updateScore()
+                
             }
 
         } else {
+            // remove bullet if off grid
             cells[position].removeChild(playerBullet)
             clearInterval(bulletInterval)
         }
 
     }, 100) // speed of bullet 
+
+    PlayerShootSound()
 }
+
+
+
 
 function addEnemyBullets() {
     setInterval(() => {
         // Spaces with enemies
         const availableEnemyPosition = enemyPositions.filter(position => cells[position].classList.contains('enemy'))
         if (availableEnemyPosition.length > 0) {
+            //get random position with enemy present
             const randomIndex = Math.floor(Math.random() * availableEnemyPosition.length)
             const randomEnemyPosition = availableEnemyPosition[randomIndex] // Gets random position within the enemies
             handleEnemyShoot(randomEnemyPosition)
@@ -149,19 +165,24 @@ function addEnemyBullets() {
     }, 2000) // Set timing for enemy bullet generation
 }
 
+
+
 function handleEnemyShoot(enemyPosition) {
     const enemyBullet = document.createElement('div') // create bullet
     enemyBullet.classList.add('enemy-bullet')
-    //console.log(enemyPosition);
+    
     let bulletPosition = enemyPosition
 
     cells[bulletPosition].appendChild(enemyBullet) 
     const bulletInterval = setInterval(() => {
+        //check if bullet is still on the grid
         if (cells[bulletPosition].contains(enemyBullet)) {
         cells[bulletPosition].removeChild(enemyBullet)
         }
 
         bulletPosition += width
+
+        // checking if bullet hits player
         if (bulletPosition === currentPosition) {
             console.log('Player Hit!');
             handleLose()
@@ -172,8 +193,13 @@ function handleEnemyShoot(enemyPosition) {
         } else {
             clearInterval(bulletInterval)
         }
-    }, 250) // bullet speed
+    }, 250) // enemy bullet speed
+
+    EnemyShootSound()
 }
+
+
+
 
 function handleEnemyMovement() {
     let moveRight = true
@@ -187,6 +213,8 @@ function handleEnemyMovement() {
         let moveDown = false
         let farRight = 0
         let farRightIndex 
+
+        // check enemy positions for right wall index 
         enemyPositions.forEach((position, index) => {
            if (position % width > farRight) {
             farRight = position % width
@@ -194,8 +222,6 @@ function handleEnemyMovement() {
            }
         })
 
-
-        //console.log(enemyPositions);
         // Check if the entire group hits the right or left wall
         if (moveRight && enemyPositions[farRightIndex] % width === width - 1) {
             moveDown = true
@@ -216,7 +242,6 @@ function handleEnemyMovement() {
             }
         }
 
-        //console.log(enemyPositions);
         enemyPositions.forEach(position => {
             cells[position].classList.add('enemy')
 
@@ -228,24 +253,30 @@ function handleEnemyMovement() {
                 enemyPositions.splice(enemyIndex, 1)
             }
 
+
             if (Math.random() < 0.005) {
                 handleEnemyShoot(position) // Fire bullets for each enemy
             }
         })
          const enemyHitBottom = enemyPositions.some(position => position >= cellCount - width) 
             if (enemyHitBottom) {
+                console.log('enemy movement');
                 handleLose()
             }
     }
-        if (!gameLost) {
-        enemyMovementInterval = setInterval(moveEnemies, 1000) // enemy movement speed
-    }
+
+     enemyMovementInterval = setInterval(moveEnemies, 740) // enemy movement speed
+
 }
+
+
 
 
 function handleLose() {
     console.log('called');
         clearInterval(enemyMovementInterval)
+   
+
 
         const caughtMessage = document.querySelector('.caught')
         caughtMessage.innerText = `You Got Caught. Score: ${score}. Try Again!`
@@ -255,12 +286,14 @@ function handleLose() {
         removeEnemies()
         removeBullets()
 
-        score = 0 
+        score = 0  
 
-        displayScoreBoard()
-        
-   
+    playCaughtSound ()
 }
+
+
+
+
 
 function removeEnemies() {
     enemyPositions.forEach(position => {
@@ -269,14 +302,32 @@ function removeEnemies() {
     enemyPositions = []
 }
 
+
+
+
 function removeBullets() {
     const bullets = document.querySelectorAll('.player-bullet, .enemy-bullet')
     bullets.forEach(bullet =>bullet.remove())
 }
 
-function displayScoreBoard() {
-    const scoreboard = document.querySelector('.scoreboard')
-    scoreboard.style.display = 'block'
+
+
+
+
+
+function PlayerShootSound () {
+    const battleSound = new Audio ('./Audio/Thunderbolt.mp3')
+    battleSound.play()
+}
+
+function EnemyShootSound () {
+    const battleSound = new Audio ('./Audio/pokeball-sound.mp3')
+    battleSound.play()
+}
+
+function playCaughtSound () {
+    const battleSound = new Audio ('./Audio/pokemon-caught.mp3')
+    battleSound.play()
 }
 
 
@@ -288,11 +339,19 @@ document.addEventListener('keydown', handlePlayerMovement)
 createGrid()
 addEnemyBullets()
 
-} // int function
+} // int function close
 
-document.addEventListener('click', () => {
+
+
+document.getElementsByClassName('startButton')[0].addEventListener('click', () => {
     let caughtMessage = document.querySelector('.caught')
     caughtMessage.innerText = `Don't Get Caught!`
-    gameLost = false
+
+    playSound()
     init()
 })
+
+function playSound () {
+    const battleSound = new Audio ('./Audio/pokemon-battle.mp3')
+    battleSound.play()
+}
