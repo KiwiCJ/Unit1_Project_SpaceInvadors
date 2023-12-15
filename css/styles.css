@@ -1,0 +1,122 @@
+*{
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('../img/vert-arena.png');
+    background-repeat: no-repeat;
+    background-size: 100vmax;
+}
+
+.head {
+    font-size: 5vmin;
+    margin-top: 5vmin;
+    padding: 2vmin;
+    font-family: 'press Start 2P';
+    color: red;
+    margin: 5vmin, 0, 2vmin, 0;
+}
+
+.caught {
+    border: 0;
+    font-size: 2vmin;
+    margin-top: 5px;
+    padding: 2vmin;
+    font-family: 'press Start 2P';
+    color: red;
+    text-align: center;
+}
+
+.board {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.grid {
+    align-items: center;
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: center;
+    height: 600px;
+    width: 600px;
+    border-color: transparent;
+    margin: 0;
+   
+} 
+
+.grid div {
+    border: 1px solid lightgrey;
+    flex-grow: 1;
+    height: 10%;
+    width: 10%;
+}
+
+.grid div.player {
+    background-image: url('../img/pikachu-f.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+}
+
+.grid div.player-bullet { 
+    background-image: url('../img/Lightning-Bolt.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    display: block;
+    margin: auto;
+    height: 100%;
+    width: 50%;
+}
+
+.grid div.enemy {
+    background-image: url('../img/team_rocket_jessie_james__ingame_battle_sprite__by_ogjazz_defuy5c-fullview.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.grid div.enemy-bullet {
+    background-image: url('../img/Pokeball.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    display: block;
+    margin: auto;
+    height: 50%;
+    width: 50%;
+}
+
+.startButton {
+    border: 0.1vmin solid gray;
+    border-radius: 4vmin;
+    color: gray;
+    cursor: pointer;
+    font-size: 2vmin;
+    margin-top: 4vmin;
+    padding: 2vmin;
+    transition: all 0.3s ease-in;
+    font-family: 'press Start 2P';
+}
+
+.scoreboard {
+    display: none;
+    font-size: 2vmin;
+    margin-top: 2vmin;
+    padding: 2vmin;
+    font-family: 'press Start 2P';
+    background-color: #fff;
+    border: 0.1vmin solid gray;
+    border-radius: 4vmin;
+    color: gray;
+    text-align: center;
+}
